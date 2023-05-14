@@ -12,4 +12,7 @@ ENV COMPOSER_ALLOW_SUPERUSER = 1
 
 COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
+RUN chmod -R 777 storage
+RUN chmod -R 777 bootstrap/cache
+
 #COPY ./app/composer.* ./
