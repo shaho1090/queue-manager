@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->text('name');
-            $table->text('payload');
+            $table->text('payload')->nullable();
             $table->string('status');
             $table->timestamps();
         });
