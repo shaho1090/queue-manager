@@ -38,7 +38,7 @@ DELETE METHOD : localhost:8082/users/inactive/delete
 ```
 POST METHOD : localhost:8082/users/email/verify
 ```
-The request is: 
+The request looks like: 
 ```json
  {
     "user_ids" : [
