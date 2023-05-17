@@ -5,7 +5,6 @@ namespace QueueManager\Commands;
 
 use Illuminate\Console\Command;
 use QueueManager\Services\QueueManager;
-use QueueManager\Services\TaskSeeker;
 use React\EventLoop\Loop;
 use React\EventLoop\TimerInterface;
 
@@ -36,21 +35,28 @@ class QueueTaskCommand extends Command
 
         $loop->addPeriodicTimer(0.2, function (TimerInterface $timer) use ($loop, $queueManager) {
 
-            /** in case you want to not stop the worker */
-            //$taskSeeker->seek();
-            //$taskSeeker->run();
-
             if ($queueManager->seek()) {
                 echo 'task is running...';
                 echo PHP_EOL;
                 $queueManager->run();
                 echo 'task processed.';
                 echo PHP_EOL;
-            } else {
-                $loop->cancelTimer($timer);
-                echo 'running task ends!';
-                echo PHP_EOL;
             }
+
+            /**
+             * in case you want to stop running queue process after all tasks are finished
+             */
+//            if ($queueManager->seek()) {
+//                echo 'task is running...';
+//                echo PHP_EOL;
+//                $queueManager->run();
+//                echo 'task processed.';
+//                echo PHP_EOL;
+//            } else {
+//                $loop->cancelTimer($timer);
+//                echo 'running task ends!';
+//                echo PHP_EOL;
+//            }
         });
 
         $loop->run();
