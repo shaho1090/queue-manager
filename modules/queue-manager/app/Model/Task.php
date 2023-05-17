@@ -25,7 +25,7 @@ class Task extends Model
         'status'
     ];
 
-    public function getAwaitingTask()
+    public function getFirstAwaitingTask()
     {
         return $this->query()->where('status', 'waiting')->first();
     }
