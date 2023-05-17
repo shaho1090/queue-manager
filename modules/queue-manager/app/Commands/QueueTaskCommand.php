@@ -4,6 +4,7 @@ namespace QueueManager\Commands;
 
 
 use Illuminate\Console\Command;
+use QueueManager\Services\QueueManager;
 use QueueManager\Services\TaskSeeker;
 use React\EventLoop\Loop;
 use React\EventLoop\TimerInterface;
@@ -15,7 +16,7 @@ class QueueTaskCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'queue-task:run';
+    protected $signature = 'task-queue:run';
 
     /**
      * The console command description.
@@ -29,18 +30,21 @@ class QueueTaskCommand extends Command
      */
     public function handle()
     {
+        $queueManager = app(QueueManager::class);
+
         $loop = Loop::get();
 
-        $loop->addPeriodicTimer(0.2, function (TimerInterface $timer) use ($loop) {
-            $taskSeeker = new TaskSeeker();
+        $loop->addPeriodicTimer(0.2, function (TimerInterface $timer) use ($loop, $queueManager) {
 
             /** in case you want to not stop the worker */
             //$taskSeeker->seek();
             //$taskSeeker->run();
 
-            if ($taskSeeker->seek()) {
-                $taskSeeker->run();
+            if ($queueManager->seek()) {
                 echo 'task is running...';
+                echo PHP_EOL;
+                $queueManager->run();
+                echo 'task processed.';
                 echo PHP_EOL;
             } else {
                 $loop->cancelTimer($timer);
