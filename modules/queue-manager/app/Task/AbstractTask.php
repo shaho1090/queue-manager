@@ -28,4 +28,9 @@ abstract class AbstractTask
     {
         $this->queueManager = new QueueManager();
     }
+
+    public function serialize(): string
+    {
+        return serialize($this);
+    }
 }
