@@ -29,34 +29,41 @@ class QueueTaskCommand extends Command
      */
     public function handle()
     {
+        /** @var QueueManager $queueManager */
         $queueManager = app(QueueManager::class);
 
         $loop = Loop::get();
 
         $loop->addPeriodicTimer(0.2, function (TimerInterface $timer) use ($loop, $queueManager) {
 
-            if ($queueManager->seek()) {
-                echo 'task is running...';
+            if ($queueManager->setAwaitingTask()) {
+                echo 'Task is running...';
                 echo PHP_EOL;
-                $queueManager->run();
-                echo 'task processed.';
+
+                if ($queueManager->runTask()) {
+                    echo 'Task processed.';
+                } else {
+                    echo 'Something went wrong please check the log file.';
+                }
+
                 echo PHP_EOL;
             }
 
             /**
              * in case you want to stop running queue process after all tasks are finished
+             *
+             *  if ($queueManager->seek()) {
+             *      echo 'task is running...';
+             *      echo PHP_EOL;
+             *      $queueManager->run();
+             *      echo 'task processed.';
+             *      echo PHP_EOL;
+             *    } else {
+             *      $loop->cancelTimer($timer);
+             *      echo 'running task ends!';
+             *      echo PHP_EOL;
+             *    }
              */
-//            if ($queueManager->seek()) {
-//                echo 'task is running...';
-//                echo PHP_EOL;
-//                $queueManager->run();
-//                echo 'task processed.';
-//                echo PHP_EOL;
-//            } else {
-//                $loop->cancelTimer($timer);
-//                echo 'running task ends!';
-//                echo PHP_EOL;
-//            }
         });
 
         $loop->run();

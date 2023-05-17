@@ -27,36 +27,42 @@ class QueueManager
         return Task::query()->paginate($pagination);
     }
 
-    public function seek(): bool
+    public function setAwaitingTask(): bool
     {
         $this->taskInQueue = (new Task)->getFirstAwaitingTask();
 
         return (bool)$this->taskInQueue;
     }
 
-    public function run(): void
+    public function runTask(): bool
     {
         if (!$this->taskInQueue) {
-            return;
+            return true;
         }
 
         try {
             DB::beginTransaction();
-
             $task = unserialize($this->taskInQueue->payload);
 
-            $task->handle();
+            $task ? $task->handle() :
+                throw new \Exception(' Error on payload ');
 
-            $this->taskInQueue->makeDone();
-
+            $this->taskInQueue->done();
             DB::commit();
+
+            return true;
         } catch (\Exception $exception) {
+
             DB::rollBack();
+            $this->taskInQueue->failed();
+
             Log::error("The task in queue with id: " .
                 $this->taskInQueue->id .
-                " was not done. reason: ".
+                " was not done. reason: " .
                 $exception->getMessage()
             );
+
+            return false;
         }
     }
 }

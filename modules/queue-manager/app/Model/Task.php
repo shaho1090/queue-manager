@@ -4,7 +4,6 @@ namespace QueueManager\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use QueueManager\Task\AbstractTask;
 
 /**
  * @property string $name
@@ -18,6 +17,7 @@ class Task extends Model
 
     const STATUS_WAITING = 'waiting';
     const STATUS_FINISHED = 'finished';
+    const STATUS_FAILED = 'failed';
 
     protected $fillable = [
         'name',
@@ -30,10 +30,17 @@ class Task extends Model
         return $this->query()->where('status', 'waiting')->first();
     }
 
-    public function makeDone(): bool
+    public function done(): bool
     {
         return $this->update([
             'status' => self::STATUS_FINISHED
+        ]);
+    }
+
+    public function failed(): bool
+    {
+        return $this->update([
+            'status' => self::STATUS_FAILED
         ]);
     }
 }
