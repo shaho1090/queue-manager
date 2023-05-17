@@ -6,7 +6,7 @@ After cloning the repository go the project directory and run:
 ```
 $ cp .env.example .env
 ```
-Obviously you need to have docker and docker compose on your local machine.
+You need to have docker and docker compose on your local machine.So,
 After having .env file run:
 ```
 $ docker-compose up -d 
@@ -19,6 +19,10 @@ $ docker exec -it --user qmuser queue-manager-app-1 /bin/bash
 Now you can run:
 ```
 $ composer install
+```
+Then run: 
+```
+$ php artisan migrate
 ```
 And to have some users to test run:
 ```
