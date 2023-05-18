@@ -16,7 +16,7 @@ RUN groupadd --force qmuser
 RUN useradd -ms /bin/bash qmuser --no-user-group -g qmuser
 
 USER qmuser
-
-RUN chown qmuser:qmuser *
+COPY --chown=qmuser:qmuser composer.json composer.lock ./
+COPY --chown=qmuser:qmuser . .
 
 #COPY ./app/composer.* ./
