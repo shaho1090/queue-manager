@@ -4,6 +4,12 @@ namespace QueueManager\Task;
 
 use QueueManager\Services\QueueManager;
 
+/**
+ * if you want to add more tasks and to run with QueueManger
+ * you can make new class extended this class,
+ * add its dependency with __construct method
+ * and put your logic inside handle method 
+ */
 abstract class AbstractTask
 {
     private ?QueueManager $queueManager = null;
