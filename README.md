@@ -64,7 +64,7 @@ When you run **composer install** you may face this issue:
 ../vendor does not exist and could not be created. 
 ```
 To fix this you can create the user that you specifeid before in the **.env** file on your docker host machine, and give it the right permission for the project directory.   
-For example in our case:
+for example:
 - Add user
 ```
 $ useradd -G www-data,root -u 1000 -d /home/qmuser qmuser
