@@ -2,7 +2,7 @@
 
 #### Installation 
 
-After cloning the repository go the project directory and run:
+After cloning the repository go to the project directory and run:
 ```
 $ cp .env.example .env
 ```
