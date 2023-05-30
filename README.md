@@ -6,8 +6,7 @@ After cloning the repository go to the project directory and run:
 ```
 $ cp .env.example .env
 ```
-You need to have docker and docker compose on your local machine.So,
-After having .env file run:
+You need to have docker and docker compose installed on your local machine.Then run:
 ```
 $ docker-compose up -d 
 ```
